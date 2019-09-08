@@ -8,7 +8,8 @@ async function viaHandler(functionPath, event) {
 }
 
 async function viaHttp(functionPath) {
-    const apiRoot = "https://zusp1o2cq3.execute-api.eu-west-1.amazonaws.com/dev/api";
+    // const apiRoot = "https://zusp1o2cq3.execute-api.eu-west-1.amazonaws.com/dev/api";
+    const apiRoot = process.env.TEST_BASE_URL;
     const method = "GET";
 
     const url = `${apiRoot}/${functionPath}`;
