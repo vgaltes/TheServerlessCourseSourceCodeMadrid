@@ -1,6 +1,7 @@
 const AWS = require("aws-sdk");
 const middy = require("middy");
 const { ssm } = require("middy/middlewares");
+const correlationIds = require('@dazn/lambda-powertools-middleware-correlation-ids');
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -22,13 +23,14 @@ const handler = async (event, context) => {
   return res;
 };
 
-module.exports.handler = middy(handler).use(
-  ssm({
-    cache: true,
-    cacheExpiryInMillis: 3 * 60 * 1000,
-    setToContext: true,
-    names: {
-      tableName: `${process.env.getTogethersTableNamePath}`
-    }
-  })
-);
+module.exports.handler = middy(handler)
+  .use(ssm({
+      cache: true,
+      cacheExpiryInMillis: 3 * 60 * 1000,
+      setToContext: true,
+      names: {
+        tableName: `${process.env.getTogethersTableNamePath}`
+      }
+    })
+  )
+  .use(correlationIds({ sampleDebugLogRate: 0 }));

@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@dazn/lambda-powertools-logger": "^1.9.0",
+    "@dazn/lambda-powertools-middleware-correlation-ids": "^1.11.0",
     "aws-sdk": "^2.524.0",
     "chance": "^1.1.0",
     "middy": "^0.29.0"
