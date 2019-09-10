@@ -23,6 +23,7 @@
     "jest": "^24.9.0",
     "serverless": "^1.51.0",
     "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-plugin-tracing": "^2.0.0",
     "serverless-pseudo-parameters": "^2.4.0",
     "superagent": "^5.1.0",
     "superagent-promise": "^1.1.0"
@@ -32,6 +33,7 @@
     "@dazn/lambda-powertools-middleware-correlation-ids": "^1.11.0",
     "@dazn/lambda-powertools-sns-client": "^1.8.2",
     "aws-sdk": "^2.524.0",
+    "aws-xray-sdk": "^2.3.6",
     "chance": "^1.1.0",
     "middy": "^0.29.0"
   }
