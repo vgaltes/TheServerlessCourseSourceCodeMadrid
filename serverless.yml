@@ -21,6 +21,8 @@ custom:
   getTogethersTableName: ${self:provider.stage}-gettogethers
   joinGetTogetherSnsTopicName: ${self:provider.stage}-joingettogethers
   joinGetTogetherSnsTopic: arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:${self:custom.joinGetTogetherSnsTopicName}
+  notifyOrganiserDLQSnsTopicName: ${self:provider.stage}-joingettogetherdlq
+  notifyOrganiserDLQSnsTopic: arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:${self:custom.notifyOrganiserDLQSnsTopicName}
 
 functions:
   getGetTogethers:
@@ -43,6 +45,16 @@ functions:
     handler: src/functions/notifyOrganiser.handler
     events:
       - sns: ${self:custom.joinGetTogetherSnsTopicName}
+    onError: ${self:custom.notifyOrganiserDLQSnsTopic}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: sns:Publish
+        Resource: ${self:custom.notifyOrganiserDLQSnsTopic}
+
+  notifyOrganiserDLQ:
+    handler: src/functions/notifyOrganiserDLQ.handler
+    events:
+      - sns: ${self:custom.notifyOrganiserDLQSnsTopic}
 
   joinGetTogether:
     handler: src/functions/joinGetTogether.handler
@@ -71,3 +83,7 @@ resources:
           - AttributeName: id
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
+    DeadLetterQueue:
+      Type: AWS::SNS::Topic
+      Properties : 
+         TopicName : ${self:custom.notifyOrganiserDLQSnsTopicName}

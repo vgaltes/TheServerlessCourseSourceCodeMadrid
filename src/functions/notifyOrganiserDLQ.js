@@ -4,12 +4,8 @@ const middy = require('middy');
 
 const handler = async (event, context) => {
     const orderPlaced = JSON.parse(event.Records[0].Sns.Message);
-
-    if (orderPlaced.getTogetherId === "error"){
-        throw new Error("Simulating error");
-    }
   
-    Log.info(`notified organiser [${orderPlaced.getTogetherId}, ${orderPlaced.orderId}, ${orderPlaced.userEmail}]`);
+    Log.info("received message in the DLQ", { getTogetherId: orderPlaced.getTogetherId, orderId: orderPlaced.orderId, userEmail: orderPlaced.userEmail });
   
     return "all done";
 };
