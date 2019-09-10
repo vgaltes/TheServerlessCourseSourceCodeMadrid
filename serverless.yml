@@ -10,6 +10,11 @@ provider:
   region: ${opt:region, self:custom.defaultRegion}
   stage: ${opt:stage, self:custom.defaultStage}
 
+package:
+  exclude: 
+    - cloudwatch-logs-to-logzio/**
+    - tests/**
+
 custom:
   defaultRegion: eu-west-1
   defaultStage: dev${env:SLSUSER, ""}
@@ -53,6 +58,7 @@ functions:
         Resource: ${self:custom.joinGetTogetherSnsTopic}
 
 resources:
+  Transform: AWS::Serverless-2016-10-31
   Resources:
     GetTogethersTable:
       Type: AWS::DynamoDB::Table

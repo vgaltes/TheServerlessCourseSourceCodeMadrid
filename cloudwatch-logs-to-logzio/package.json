@@ -1,0 +1,20 @@
+{
+  "name": "cloudwatch-logs-to-logzio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "serverless deploy --aws-profile serverless-local --aws-s3-accelerate"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.213.1",
+    "bluebird": "^3.5.4"
+  },
+  "devDependencies": {
+    "serverless": "^1.40.0",
+    "serverless-iam-roles-per-function": "^0.1.5",
+    "serverless-pseudo-parameters": "^1.1.5"
+  }
+}
