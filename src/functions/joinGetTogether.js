@@ -5,6 +5,7 @@ const sns = new AWS.SNS();
 const Log = require('@dazn/lambda-powertools-logger');
 const correlationIds = require('@dazn/lambda-powertools-middleware-correlation-ids');
 const middy = require('middy');
+const SNS = require('@dazn/lambda-powertools-sns-client')
 
 const handler = async (event, context) => {
   const body = JSON.parse(event.body);
@@ -25,7 +26,7 @@ const handler = async (event, context) => {
     TopicArn: process.env.joinGetTogetherSnsTopic
   };
 
-  await sns.publish(params).promise();
+  await SNS.publish(params).promise();
 
   Log.info("published 'join_getTogether' event");
 
