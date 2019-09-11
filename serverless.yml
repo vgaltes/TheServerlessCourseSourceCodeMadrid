@@ -17,6 +17,8 @@ provider:
         - 'xray:PutTraceSegments'
         - 'xray:PutTelemetryRecords'
       Resource: '*'
+  environment:
+    service: ${self:service}-${self:provider.stage}
 
 package:
   exclude: 

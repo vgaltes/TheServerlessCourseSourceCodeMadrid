@@ -3,14 +3,21 @@ const correlationIds = require('@dazn/lambda-powertools-middleware-correlation-i
 const middy = require('middy');
 const AWSXray = require("aws-xray-sdk")
 const AWS = AWSXray.captureAWS(require("aws-sdk"));
+const epsagon = require("epsagon");
 
-const handler = async (event, context) => {
+epsagon.init({
+    token: "4631348e-1228-44f4-937b-0a503d298a8c",
+    appName: process.env.service,
+    metadataOnly: false
+  });
+
+const handler = epsagon.lambdaWrapper(async (event, context) => {
     const orderPlaced = JSON.parse(event.Records[0].Sns.Message);
   
     Log.info("received message in the DLQ", { getTogetherId: orderPlaced.getTogetherId, orderId: orderPlaced.orderId, userEmail: orderPlaced.userEmail });
   
     return "all done";
-};
+});
 
 
 module.exports.handler = middy(handler)

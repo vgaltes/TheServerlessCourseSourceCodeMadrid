@@ -5,9 +5,16 @@ const chance = require("chance").Chance();
 const Log = require('@dazn/lambda-powertools-logger');
 const correlationIds = require('@dazn/lambda-powertools-middleware-correlation-ids');
 const middy = require('middy');
-const SNS = require('@dazn/lambda-powertools-sns-client')
+const SNS = require('@dazn/lambda-powertools-sns-client');
+const epsagon = require("epsagon");
 
-const handler = async (event, context) => {
+epsagon.init({
+    token: "4631348e-1228-44f4-937b-0a503d298a8c",
+    appName: process.env.service,
+    metadataOnly: false
+  });
+
+const handler = epsagon.lambdaWrapper(async (event, context) => {
   const body = JSON.parse(event.body);
   const getTogetherId = body.getTogetherId;
   const userEmail = body.userEmail;
@@ -36,7 +43,7 @@ const handler = async (event, context) => {
   };
 
   return response;
-};
+});
 
 module.exports.handler = middy(handler)
     .use(correlationIds({ sampleDebugLogRate: 0 }));

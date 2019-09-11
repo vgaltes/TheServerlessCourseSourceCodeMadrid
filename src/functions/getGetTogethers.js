@@ -3,10 +3,17 @@ const AWS = AWSXray.captureAWS(require("aws-sdk"));
 const middy = require("middy");
 const { ssm } = require("middy/middlewares");
 const correlationIds = require('@dazn/lambda-powertools-middleware-correlation-ids');
+const epsagon = require("epsagon");
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-const handler = async (event, context) => {
+epsagon.init({
+  token: "4631348e-1228-44f4-937b-0a503d298a8c",
+  appName: process.env.service,
+  metadataOnly: false
+});
+
+const handler = epsagon.lambdaWrapper(async (event, context) => {
   const count = 8;
 
   const req = {
@@ -22,7 +29,7 @@ const handler = async (event, context) => {
   };
 
   return res;
-};
+});
 
 module.exports.handler = middy(handler)
   .use(ssm({
