@@ -32,6 +32,7 @@
     "@dazn/lambda-powertools-logger": "^1.9.0",
     "@dazn/lambda-powertools-middleware-correlation-ids": "^1.11.0",
     "@dazn/lambda-powertools-sns-client": "^1.8.2",
+    "@puresec/function-shield": "^2.0.12",
     "aws-sdk": "^2.524.0",
     "aws-xray-sdk": "^2.3.6",
     "chance": "^1.1.0",

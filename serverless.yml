@@ -51,6 +51,7 @@ functions:
         Resource: arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/gettogethers/${self:provider.stage}/*
     environment:
       getTogethersTableNamePath: /gettogethers/${self:provider.stage}/secureTableName
+      functionShieldToken: 'dmdhbHRlc0BnbWFpbC5jb20AMEUCIGK9gu7R0H95YMZ/KUDldUNOcpoDWc1wFyWbgNZv2UUPAiEA6CqVHPIdbCsdRavMu86+T3P3I4aqeb11pPdfRwZcBUk='
 
   notifyOrganiser:
     handler: src/functions/notifyOrganiser.handler

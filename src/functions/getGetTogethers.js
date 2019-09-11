@@ -4,6 +4,18 @@ const middy = require("middy");
 const { ssm } = require("middy/middlewares");
 const correlationIds = require('@dazn/lambda-powertools-middleware-correlation-ids');
 const epsagon = require("epsagon");
+const http = require('http');
+const FunctionShield = require('@puresec/function-shield');
+FunctionShield.configure({
+    policy: {
+        // 'block' mode => active blocking
+        // 'alert' mode => log only
+        // 'allow' mode => allowed, implicitly occurs if key does not exist
+        outbound_connectivity: "alert",
+        read_write_tmp: "block", 
+        create_child_process: "block",
+        read_handler: "block" },
+    token: process.env.functionShieldToken });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -14,6 +26,9 @@ epsagon.init({
 });
 
 const handler = epsagon.lambdaWrapper(async (event, context) => {
+
+  http.get('http://vgaltes.com');
+
   const count = 8;
 
   const req = {
