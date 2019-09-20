@@ -1,64 +1,32 @@
-# TheServerlessCourseSourceCode
-Código para el curso de Serverless
+# Curso Serverless
 
-Inicializar el proyecto npm:
-```
-npm init
-```
+## Pre-requisitos
 
-Instalar el framework serverless
+### Cuenta en AWS
 
-```
-npm install --save-dev serverless
-```
+Vamos a utilizar AWS Lambda, así que necesitas tener una cuenta en AWS. No te preocupes, puedes crear una cuenta gratuita sin problemas [aquí](https://aws.amazon.com/free/start-your-free-trial/). Las cosas que vamos a hacer durante el curso no deberían hacerte gastar un céntimo en AWS. Habrá algún ejercicio opcional en el que si que puedes incurrir en gastos. Pero será opcional y lo avisaré.
 
-Crear el serverless.yml
+Vamos a necesitar al menos un usuario en tu cuenta para el curso, y si haces un ejercicio opcional necesitarás otro. El primero será el que utilizaremos en local para desplegar y probar la aplicación. El segundo será el que utilizará nuestro sistema de integración contínua para desplegar y probar la aplicación. Vamos a por ello: repite los siguientes pasos dos veces (una por usuario) con diferentes nombres de usuario.
 
-```
-service: gettogether
+ - Haz login en tu cuenta de AWS y ve a la página Identity & Access Management (IAM)
+ - Haz click en Users y después en Add User. Introduce serverless-local como nombre para el primer usuario y serverless-agent como nombre para el segundo usuario. Activa Programmatic Access. Haz click en Next para ir a la página de permisos. Haz click en Attach existing policies directly y selecciona la policy llamada AdministratorAccess (la primera).
+ - Clica en Next: tags.
+ - Clica en Next: review. Chequea que todo está bien y clica en Create user.
+ - Visualiza y copia la API Key y el Secret a un lugar temporal. Lo necesitaremos más tarde.
 
-provider:
-  name: aws
-  runtime: nodejs8.10
-  region: eu-west-1
-  stage: dev
+Esto no es una buena práctica. La buena práctica sería dar los mínimos permisos posibles a este usuario (y a todos). Para hacerlo, crearíamos una policy en la que especificaríamos los mínimos permisos (algo como lo que puedes encontrar aqui) y asiganaríamos esa policy al usurio. Cada vez que viéramos que nos falta un permiso, deberíamos cambiar la policy. Para no tener que ir haciendo esto cada dos por tres, asignamos el usuario al grupo Administrators, pero no debéis hacer esto en un proyecto en producción. Hay herramientas que nos pueden ayudar como esta o esta.
+Cuenta en Epsagon
 
-functions:
-  helloWorld:
-    handler: src/functions/helloWorld.handler
-    events:
-      - http:
-          path: api/helloWorld
-          method: get
-```
+Cuando hablemos de monitorización vamos a utilizar una herramienta llamada Epsagon. Tendrías que prepararla para que todo nos vaya fluido en caso que decidas hacer el ejercicio, que será opcional. Para hacerlo, ve a su página web y date de alta en el servicio gratuito. Cuando te des de alta, te explicarán lo que tienes que hacer. Básicamente deberás desplegar un CloudFormation en tu cuenta AWS y anotarte el Token que utilizaremos después.
 
-crear el src/functions/helloWorld.js
+## Cómo avanzar en este curso
 
-```
-module.exports.handler = async event => {
-    console.log(JSON.stringify(event));
+Para poder ir avanzando en el curso, vas a tener que ser capaz de ir subiendo tus cambios al repositorio a medida que vayamos avanzando para que el sistema de integración contínua pueda hacer su trabajo. En el curso empezaremos de cero, por lo tanto lo mejor es que te crees un repositorio nuevo y utilices este como referencia.
 
-    const { name } = event.queryStringParameters;
+## Creación de un profile en nuestro ordenador.
 
-    const res = {
-        statusCode: 200,
-        body: JSON.stringify(`Hello ${name}`)
-    };
+Ahora es la hora de configurar nuestro ordenador para que utilice estas credenciales a la hora de desplegar nuestra aplicación. Hay varias maneras de hacer esto pero la mejor es utilizar un profile y que este no sea el profile por defecto, para evitar posibles desgracias en el futuro.
 
-    return res;
-};
-```
+Para setear este profile hay varias maneras, pero la más cómoda es utilizar el propio Serverless framework. Así que inicializa un nuevo proyecto node con `npm init`, instala el framework con `npm install --save-dev serverless` y ejecuta el siguiente comando: `npx serverless config credentials --provider aws --key <tu_key> --secret <tu_secret> --profile serverless-local`
 
-Deployar
-
-```
-AWS_PROFILE=serverless-local npx serverless deploy
-```
-
-```
-npx serverless deploy --aws-profile serverless-local
-```
-
-Hacer un get a la función e ir a cloudwatch a ver qué ha pasado
-
-Añadir .serverless al .gitignore
+Dónde tu_key y tu_secret son los datos que nos hemos guardado del paso anterior para el usuario serverless-local. Las claves para el usuario serverless-agent las utilizaremos más tarde, así que guárdalas bien. Con esto ya tendremos el profile creado.
