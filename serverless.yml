@@ -51,6 +51,19 @@ functions:
         Action: sns:Publish
         Resource: ${self:custom.joinGetTogetherSnsTopic}
 
+  ec2started:
+    handler: ec2started.handler
+    events:
+      - eventBridge:
+          pattern:
+            source:
+              - 'aws.ec2'
+            detail-type:
+              - 'EC2 Instance State-change Notification'
+            detail:
+              state:
+                - pending
+
 resources:
   Resources:
     GetTogethersTable:
