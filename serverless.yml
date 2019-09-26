@@ -9,6 +9,8 @@ provider:
   runtime: nodejs10.x
   region: ${opt:region, self:custom.defaultRegion}
   stage: ${opt:stage, self:custom.defaultStage}
+  logs:
+    restApi: true
 
 custom:
   defaultRegion: eu-west-1
