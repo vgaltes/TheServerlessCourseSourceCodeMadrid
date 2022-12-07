@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/vgaltes/TheServerlessCourseSourceCode#readme",
   "devDependencies": {
-    "serverless": "^1.51.0"
+    "serverless": "^3.25.1"
   }
 }
